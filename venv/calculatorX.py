@@ -14,6 +14,9 @@ class CalculatorWidget(Widget):
     def button_value(self, number):
         prev_number = self.ids.input_box.text
 
+        if "wrong equation" in prev_number:
+            prev_number = ''
+
         if prev_number == '0':
             self.ids.input_box.text = ''
             self.ids.input_box.text = f"{number}"
@@ -29,12 +32,44 @@ class CalculatorWidget(Widget):
         prev_number = prev_number[:-1]
         self.ids.input_box.text = prev_number
 
+    def results(self):
+        prev_number = self.ids.input_box.text
+        try:
+            result = eval(prev_number)
+            self.ids.input_box.text = str(result)
+        except:
+            self.ids.input_box.text = "wrong equation"
 
-class CalculatorApp(App):
+    def positive_negative(self):
+        prev_number = self.ids.input_box.text
+
+        if "-" in prev_number:
+            self.ids.input_box.text = f"{prev_number.replace('-', '')}"
+        else:
+            self.ids.input_box.text = f"-{prev_number}"
+
+    def dot(self):
+        prev_number = self.ids.input_box.text
+        num_list = prev_number.split("+")
+
+        if "+" in prev_number and "." not in num_list[-1]:
+            prev_number = f"{prev_number}."
+            self.ids.input_box.text = prev_number
+
+        if "." in prev_number:
+            pass
+
+        else:
+            prev_number = f"{prev_number}."
+            self.ids.input_box.text = prev_number
+
+
+
+class CalculatorXApp(App):
     def build(self):
         return CalculatorWidget()
 
 
 if __name__ == "__main__":
-    CalculatorApp().run()
+    CalculatorXApp().run()
 
