@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
+import re
 
 Builder.load_file('./calculatorX.kv')
 Window.size = (350, 550)
@@ -50,13 +51,13 @@ class CalculatorWidget(Widget):
 
     def dot(self):
         prev_number = self.ids.input_box.text
-        num_list = prev_number.split("+")
+        num_list = re.split("\+/\*/-///%", prev_number)
 
-        if "+" in prev_number and "." not in num_list[-1]:
+        if ("+" in prev_number or "-" in prev_number or "/" in prev_number or "*" in prev_number or "%" in prev_number) and "." not in num_list[-1]:
             prev_number = f"{prev_number}."
             self.ids.input_box.text = prev_number
 
-        if "." in prev_number:
+        elif "." in prev_number:
             pass
 
         else:
